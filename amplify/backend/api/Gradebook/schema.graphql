@@ -1,0 +1,36 @@
+type Grade @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  grade: Int
+}
+
+type AssignmentGrade @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  assignmentID: ID! @index(name: "byAssignment")
+  Grade: Grade @hasOne
+}
+
+type Student @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  email: String!
+  Year: String
+  Courses: [Course] @manyToMany(relationName: "StudentCourse")
+  Assignments: [Assignment] @manyToMany(relationName: "StudentAssignment")
+}
+
+type Course @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  Assignments: [Assignment] @hasMany(indexName: "byCourse", fields: ["id"])
+  students: [Student] @manyToMany(relationName: "StudentCourse")
+}
+
+type Assignment @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  dueDate: String
+  totalPoints: Int!
+  courseID: ID! @index(name: "byCourse")
+  students: [Student] @manyToMany(relationName: "StudentAssignment")
+  AssignmentGrades: [AssignmentGrade] @hasMany(indexName: "byAssignment", fields: ["id"])
+}

@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import {Layout } from "antd";
+import ScreenRoutes from "./Components/ScreenRoutes";
+import SideBar from "./Components/SideBar";
+import { Amplify } from "aws-amplify";
+import awsconfig from "./aws-exports";
 
+
+Amplify.configure(awsconfig);
+
+
+
+const {Sider,Content,Footer} = Layout;
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    
+       <Layout>
+      <Sider style={{backgroundColor: 'white'}}>
+        <SideBar/>
+      </Sider>
+      <Layout>
+        <Content>
+          <ScreenRoutes/>
+        </Content>
+        <Footer style={{textAlign: 'center'}}>
+          Gradebook @2023
+        </Footer>
+      </Layout>
+    </Layout>
+    
+    
+
   );
 }
 

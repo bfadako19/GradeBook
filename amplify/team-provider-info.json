@@ -1,0 +1,15 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gradebook-staging-133403-authRole",
+      "UnauthRoleArn": "arn:aws:iam::201114705393:role/amplify-gradebook-staging-133403-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::201114705393:role/amplify-gradebook-staging-133403-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gradebook-staging-133403-deployment",
+      "UnauthRoleName": "amplify-gradebook-staging-133403-unauthRole",
+      "StackName": "amplify-gradebook-staging-133403",
+      "StackId": "arn:aws:cloudformation:us-east-1:201114705393:stack/amplify-gradebook-staging-133403/60dae060-c97f-11ed-8f2a-0a02c92590b5",
+      "AmplifyAppId": "d13cfczg4dh3qy"
+    }
+  }
+}
