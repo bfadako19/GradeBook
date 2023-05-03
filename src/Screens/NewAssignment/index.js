@@ -1,15 +1,26 @@
 import { Card, Input, Button,message,Form } from "antd";
-import {Assignment, Course } from "../../Models";
+import {Assignment, CA, Course} from "../../models";
 import { DataStore } from "aws-amplify";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 const NewAssignment =() =>{
     const [newAssignment, setNewAssignment] = useState('');
     const[name, setName] = useState('');
     const[dueDate,setDueDate] = useState('');
     const[totalPoints,setTotalPoints] = useState('');
     const [course, setCourse] = useState('');
-    const [courseName, setCourseName] = useState('');
     const [assignment, setAssignment] = useState('');
+    const [newCA, setNewCA] = useState('');
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+        DataStore.query(Course, id).then(setCourse);
+
+    }, [id])
     const onFinish = async () => {
         if(!name){
             message.error('Name Required!');
@@ -19,11 +30,9 @@ const NewAssignment =() =>{
             message.error('Total Points Required!');
             return;
         }
-        if(assignment){
-            await createNewAssignment();
-        }else{
-            await updateAssignment();
-        }
+        await createNewAssignment();
+        await createNewCA();
+            
 
     };
     useEffect(() => {
@@ -35,28 +44,27 @@ const NewAssignment =() =>{
         setDueDate(assignment.dueDate);
     }, [assignment]);
 
-    const updateAssignment = async () => {
-        const updateAssignment = await DataStore.save(
-            Assignment.copyOf(assignment, (updated) => {
-                updated.name = name;
-                updated.totalPoints = totalPoints;
-                updated.dueDate = dueDate;
-                updated.courseID = 'bf88a6a1-3507-4d07-8cad-7feb37eb635c';
-            }));
-        setAssignment(updateAssignment);
-        message.success('Assigment Updated!');
-    };
     const createNewAssignment = async () => {
         const newAssignment = DataStore.save(new Assignment({
             name,
             dueDate,
-            totalPoints,
-            courseID : 'bf88a6a1-3507-4d07-8cad-7feb37eb635c',
+            totalPoints : totalPoints,
+            courseID: course.id
             
             
         }));
         setNewAssignment(newAssignment);
         message.success('Assignment Created!')
+    };
+
+    const createNewCA = async () => {
+        const newCA = DataStore.save(new CA({
+            courseID: course.id,
+            assignmentID: assignment.id
+            
+            
+        }));
+        setNewCA(newCA);
     };
 
 
@@ -77,11 +85,6 @@ const NewAssignment =() =>{
                     <Input placeholder="Enter Due Date"
                     value = {dueDate}
                     onChange={(e) => setDueDate(e.target.value)}/>
-                </Form.Item>
-                <Form.Item label = {'Course Name'} name='courseName'>
-                    <Input placeholder="Enter Course Name"
-                    value = {courseName}
-                    onChange={(e) => setCourse(e.target.value)}/>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">Create Assignment</Button>

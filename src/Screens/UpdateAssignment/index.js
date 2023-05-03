@@ -1,14 +1,33 @@
 import { Card, Input, Button,message,Form } from "antd";
-import {Assignment, Course } from "../../Models";
+import {Assignment} from "../../models";
 import { DataStore } from "aws-amplify";
-import { useState} from "react";
+import { useEffect, useState} from "react";
+import { useParams } from "react-router-dom";
 const UpdateAssignment =() =>{
     const[name, setName] = useState('');
     const[dueDate,setDueDate] = useState('');
     const[totalPoints,setTotalPoints] = useState('');
-    const [course, setCourse] = useState('');
-    const [courseName, setCourseName] = useState('');
     const [assignment, setAssignment] = useState('');
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+        DataStore.query(Assignment, id).then(setAssignment);
+
+    }, [id])
+
+    
+
+    useEffect(() => {
+        if(!assignment){
+            return;
+        }
+        setName(assignment.name);
+        setTotalPoints(assignment.totalPoints);
+        setDueDate(assignment.dueDate);
+    }, [assignment]);
     const onFinish = async () => {
         if(!name){
             message.error('Name Required!');
@@ -31,10 +50,9 @@ const UpdateAssignment =() =>{
                 updated.name = name;
                 updated.totalPoints = totalPoints;
                 updated.dueDate = dueDate;
-                updated.courseID = 'bf88a6a1-3507-4d07-8cad-7feb37eb635c';
             }));
         setAssignment(updateAssignment);
-        message.success('Assigment Updated!');
+        message.success('Assigment Updated!'); 
     };
    
 
@@ -42,25 +60,20 @@ const UpdateAssignment =() =>{
     return (
         <Card title={'Update Assignment'} style={styles.page}>
             <Form layout="vertical" onFinish={onFinish}>
-                <Form.Item label = {'Name'} required name='name'>
+                <Form.Item label = {'Name'} required >
                     <Input 
                     value = {name}
                     onChange={(e) => setName(e.target.value)}/>
                 </Form.Item>
-                <Form.Item label = {'Total Points'} required name='totalPoints'>
+                <Form.Item label = {'Total Points'} required >
                     <Input 
                     value = {totalPoints}
                     onChange={(e) => setTotalPoints(e.target.value)}/>
                 </Form.Item>
-                <Form.Item label = {'Due Date'} name='dueDate'>
+                <Form.Item label = {'Due Date'} >
                     <Input 
                     value = {dueDate}
                     onChange={(e) => setDueDate(e.target.value)}/>
-                </Form.Item>
-                <Form.Item label = {'Course Name'} name='courseName'>
-                    <Input 
-                    value = {courseName}
-                    onChange={(e) => setCourse(e.target.value)}/>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">Update Assignment</Button>

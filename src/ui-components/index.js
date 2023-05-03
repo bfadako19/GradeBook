@@ -5,9 +5,9 @@
  **************************************************************************/
 
 export { default as studioTheme } from "./studioTheme";
-export { default as GradeCreateForm } from "./GradeCreateForm";
-export { default as GradeUpdateForm } from "./GradeUpdateForm";
-export { default as StudentCreateForm } from "./StudentCreateForm";
-export { default as StudentUpdateForm } from "./StudentUpdateForm";
 export { default as CourseCreateForm } from "./CourseCreateForm";
 export { default as CourseUpdateForm } from "./CourseUpdateForm";
+export { default as AssignmentCreateForm } from "./AssignmentCreateForm";
+export { default as AssignmentUpdateForm } from "./AssignmentUpdateForm";
+export { default as StudentCreateForm } from "./StudentCreateForm";
+export { default as StudentUpdateForm } from "./StudentUpdateForm";

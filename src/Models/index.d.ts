@@ -6,64 +6,36 @@ import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@a
 
 
 
-type EagerGrade = {
+type EagerCS = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Grade, 'id'>;
+    identifier: ManagedIdentifier<CS, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly grade?: number | null;
+  readonly courseID: string;
+  readonly Student?: Student | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly cSStudentId?: string | null;
 }
 
-type LazyGrade = {
+type LazyCS = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Grade, 'id'>;
+    identifier: ManagedIdentifier<CS, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly grade?: number | null;
+  readonly courseID: string;
+  readonly Student: AsyncItem<Student | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly cSStudentId?: string | null;
 }
 
-export declare type Grade = LazyLoading extends LazyLoadingDisabled ? EagerGrade : LazyGrade
+export declare type CS = LazyLoading extends LazyLoadingDisabled ? EagerCS : LazyCS
 
-export declare const Grade: (new (init: ModelInit<Grade>) => Grade) & {
-  copyOf(source: Grade, mutator: (draft: MutableModel<Grade>) => MutableModel<Grade> | void): Grade;
-}
-
-type EagerAssignmentGrade = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<AssignmentGrade, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly assignmentID: string;
-  readonly Grade?: Grade | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly assignmentGradeGradeId?: string | null;
-}
-
-type LazyAssignmentGrade = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<AssignmentGrade, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly assignmentID: string;
-  readonly Grade: AsyncItem<Grade | undefined>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly assignmentGradeGradeId?: string | null;
-}
-
-export declare type AssignmentGrade = LazyLoading extends LazyLoadingDisabled ? EagerAssignmentGrade : LazyAssignmentGrade
-
-export declare const AssignmentGrade: (new (init: ModelInit<AssignmentGrade>) => AssignmentGrade) & {
-  copyOf(source: AssignmentGrade, mutator: (draft: MutableModel<AssignmentGrade>) => MutableModel<AssignmentGrade> | void): AssignmentGrade;
+export declare const CS: (new (init: ModelInit<CS>) => CS) & {
+  copyOf(source: CS, mutator: (draft: MutableModel<CS>) => MutableModel<CS> | void): CS;
 }
 
 type EagerStudent = {
@@ -74,9 +46,8 @@ type EagerStudent = {
   readonly id: string;
   readonly name: string;
   readonly email: string;
-  readonly Year?: string | null;
-  readonly Courses?: (StudentCourse | null)[] | null;
-  readonly Assignments?: (StudentAssignment | null)[] | null;
+  readonly courses?: (CourseStudent | null)[] | null;
+  readonly Grades?: (Grade | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -89,9 +60,8 @@ type LazyStudent = {
   readonly id: string;
   readonly name: string;
   readonly email: string;
-  readonly Year?: string | null;
-  readonly Courses: AsyncCollection<StudentCourse>;
-  readonly Assignments: AsyncCollection<StudentAssignment>;
+  readonly courses: AsyncCollection<CourseStudent>;
+  readonly Grades: AsyncCollection<Grade>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -109,8 +79,10 @@ type EagerCourse = {
   };
   readonly id: string;
   readonly name: string;
-  readonly Assignments?: (Assignment | null)[] | null;
-  readonly students?: (StudentCourse | null)[] | null;
+  readonly Students?: (CourseStudent | null)[] | null;
+  readonly Assignments?: (CourseAssignment | null)[] | null;
+  readonly CS?: (CS | null)[] | null;
+  readonly CAS?: (CA | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -122,8 +94,10 @@ type LazyCourse = {
   };
   readonly id: string;
   readonly name: string;
-  readonly Assignments: AsyncCollection<Assignment>;
-  readonly students: AsyncCollection<StudentCourse>;
+  readonly Students: AsyncCollection<CourseStudent>;
+  readonly Assignments: AsyncCollection<CourseAssignment>;
+  readonly CS: AsyncCollection<CS>;
+  readonly CAS: AsyncCollection<CA>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -142,10 +116,8 @@ type EagerAssignment = {
   readonly id: string;
   readonly name: string;
   readonly dueDate?: string | null;
-  readonly totalPoints: number;
-  readonly courseID: string;
-  readonly students?: (StudentAssignment | null)[] | null;
-  readonly AssignmentGrades?: (AssignmentGrade | null)[] | null;
+  readonly totalPoints: string;
+  readonly courses?: (CourseAssignment | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -158,10 +130,8 @@ type LazyAssignment = {
   readonly id: string;
   readonly name: string;
   readonly dueDate?: string | null;
-  readonly totalPoints: number;
-  readonly courseID: string;
-  readonly students: AsyncCollection<StudentAssignment>;
-  readonly AssignmentGrades: AsyncCollection<AssignmentGrade>;
+  readonly totalPoints: string;
+  readonly courses: AsyncCollection<CourseAssignment>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -172,9 +142,73 @@ export declare const Assignment: (new (init: ModelInit<Assignment>) => Assignmen
   copyOf(source: Assignment, mutator: (draft: MutableModel<Assignment>) => MutableModel<Assignment> | void): Assignment;
 }
 
-type EagerStudentCourse = {
+type EagerCA = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<StudentCourse, 'id'>;
+    identifier: ManagedIdentifier<CA, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly courseID: string;
+  readonly Assignment?: Assignment | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly cAAssignmentId?: string | null;
+}
+
+type LazyCA = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<CA, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly courseID: string;
+  readonly Assignment: AsyncItem<Assignment | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly cAAssignmentId?: string | null;
+}
+
+export declare type CA = LazyLoading extends LazyLoadingDisabled ? EagerCA : LazyCA
+
+export declare const CA: (new (init: ModelInit<CA>) => CA) & {
+  copyOf(source: CA, mutator: (draft: MutableModel<CA>) => MutableModel<CA> | void): CA;
+}
+
+type EagerGrade = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Grade, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly int?: string | null;
+  readonly studentID: string;
+  readonly courseName?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyGrade = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Grade, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly int?: string | null;
+  readonly studentID: string;
+  readonly courseName?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Grade = LazyLoading extends LazyLoadingDisabled ? EagerGrade : LazyGrade
+
+export declare const Grade: (new (init: ModelInit<Grade>) => Grade) & {
+  copyOf(source: Grade, mutator: (draft: MutableModel<Grade>) => MutableModel<Grade> | void): Grade;
+}
+
+type EagerCourseStudent = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<CourseStudent, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -186,9 +220,9 @@ type EagerStudentCourse = {
   readonly updatedAt?: string | null;
 }
 
-type LazyStudentCourse = {
+type LazyCourseStudent = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<StudentCourse, 'id'>;
+    identifier: ManagedIdentifier<CourseStudent, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -200,42 +234,42 @@ type LazyStudentCourse = {
   readonly updatedAt?: string | null;
 }
 
-export declare type StudentCourse = LazyLoading extends LazyLoadingDisabled ? EagerStudentCourse : LazyStudentCourse
+export declare type CourseStudent = LazyLoading extends LazyLoadingDisabled ? EagerCourseStudent : LazyCourseStudent
 
-export declare const StudentCourse: (new (init: ModelInit<StudentCourse>) => StudentCourse) & {
-  copyOf(source: StudentCourse, mutator: (draft: MutableModel<StudentCourse>) => MutableModel<StudentCourse> | void): StudentCourse;
+export declare const CourseStudent: (new (init: ModelInit<CourseStudent>) => CourseStudent) & {
+  copyOf(source: CourseStudent, mutator: (draft: MutableModel<CourseStudent>) => MutableModel<CourseStudent> | void): CourseStudent;
 }
 
-type EagerStudentAssignment = {
+type EagerCourseAssignment = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<StudentAssignment, 'id'>;
+    identifier: ManagedIdentifier<CourseAssignment, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly studentId?: string | null;
+  readonly courseId?: string | null;
   readonly assignmentId?: string | null;
-  readonly student: Student;
+  readonly course: Course;
   readonly assignment: Assignment;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyStudentAssignment = {
+type LazyCourseAssignment = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<StudentAssignment, 'id'>;
+    identifier: ManagedIdentifier<CourseAssignment, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly studentId?: string | null;
+  readonly courseId?: string | null;
   readonly assignmentId?: string | null;
-  readonly student: AsyncItem<Student>;
+  readonly course: AsyncItem<Course>;
   readonly assignment: AsyncItem<Assignment>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type StudentAssignment = LazyLoading extends LazyLoadingDisabled ? EagerStudentAssignment : LazyStudentAssignment
+export declare type CourseAssignment = LazyLoading extends LazyLoadingDisabled ? EagerCourseAssignment : LazyCourseAssignment
 
-export declare const StudentAssignment: (new (init: ModelInit<StudentAssignment>) => StudentAssignment) & {
-  copyOf(source: StudentAssignment, mutator: (draft: MutableModel<StudentAssignment>) => MutableModel<StudentAssignment> | void): StudentAssignment;
+export declare const CourseAssignment: (new (init: ModelInit<CourseAssignment>) => CourseAssignment) & {
+  copyOf(source: CourseAssignment, mutator: (draft: MutableModel<CourseAssignment>) => MutableModel<CourseAssignment> | void): CourseAssignment;
 }

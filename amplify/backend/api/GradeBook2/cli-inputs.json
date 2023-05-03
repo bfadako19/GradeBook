@@ -1,7 +1,7 @@
 {
   "version": 1,
   "serviceConfiguration": {
-    "apiName": "Gradebook",
+    "apiName": "GradeBook2",
     "serviceName": "AppSync",
     "defaultAuthType": {
       "mode": "API_KEY",

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, Table,message, Popconfirm } from "antd";
-import {Course} from '../../Models';
+import {Course} from '../../models';
 import { DataStore } from "aws-amplify";
 import { Link } from "react-router-dom";
 import { Button } from "antd/es/radio";
@@ -27,8 +27,8 @@ const Courses = () => {
             dataIndex: 'name',
             key: 'name',
         },
-        { title: 'Action',
-      key: 'action',
+        { title: '',
+      key: 'Action',
       render: (_,item) => (
         <Popconfirm
             placement = "topLeft"
@@ -43,11 +43,11 @@ const Courses = () => {
         </Popconfirm>
       )
     },
-    {title:'Edit',
-     key: 'edit',
+    {title:'',
+     key: 'Action',
      render:(_,item) => ( 
-        <Link to={'updateCourse'}>
-        <Button type="primary">Edit</Button>
+        <Link to={`viewCourse/${item.id}`}>
+        <Button type="primary">View</Button>
     </Link>)
     }
         

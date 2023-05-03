@@ -14,15 +14,15 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type GradeUpdateFormInputValues = {
-    grade?: number;
+    int?: string;
 };
 export declare type GradeUpdateFormValidationValues = {
-    grade?: ValidationFunction<number>;
+    int?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type GradeUpdateFormOverridesProps = {
     GradeUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    grade?: PrimitiveOverrideProps<TextFieldProps>;
+    int?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type GradeUpdateFormProps = React.PropsWithChildren<{
     overrides?: GradeUpdateFormOverridesProps | undefined | null;

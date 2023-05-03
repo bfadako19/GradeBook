@@ -1,12 +1,31 @@
 import { Card, Input, Button,message,Form } from "antd";
-import { Student } from "../../Models";
+import { Student } from "../../models";
 import { DataStore } from "aws-amplify";
-import { useState} from "react";
+import { useState, useEffect} from "react";
+import { useParams } from "react-router-dom";
+
 const UpdateStudent =() =>{
-    
     const[name, setName] = useState('');
     const[email,setEmail] = useState('');
     const[student,setStudent] = useState('');
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+        DataStore.query(Student, id).then(setStudent);
+
+    }, [id])
+    useEffect(() => {
+        if (!student) {
+            return;
+        }
+        setName(student.name);
+        setEmail(student.email);
+    }, [student]);
+    console.log(student);
+
     
     const onFinish = () => {
         if(!name){
@@ -22,6 +41,7 @@ const UpdateStudent =() =>{
         
     
     };
+    
     const updateStudent = async () => {
         const updateStudent = await DataStore.save(
             Student.copyOf(student, (updated) => {
@@ -36,13 +56,13 @@ const UpdateStudent =() =>{
     return (
         <Card title={'Update Student'} style={styles.page}>
             <Form layout="vertical" onFinish={onFinish}>
-                <Form.Item label = {'Name'} required name='name'>
+                <Form.Item label = {'Name'} required >
                     <Input
                     value = {name}
                     onChange={(e) => setName(e.target.value)}/>
                     
                 </Form.Item>
-                <Form.Item label = {'Email'} required name='email'>
+                <Form.Item label = {'Email'} required>
                     <Input 
                     value = {email}
                     onChange={(e) => setEmail(e.target.value)}/>

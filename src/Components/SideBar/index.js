@@ -1,9 +1,20 @@
 import { Menu } from "antd";
 import { useNavigate} from "react-router-dom";
+import { Auth } from "aws-amplify";
 
 
 const SideMenu = () => {
     const navigate = useNavigate();
+    
+
+    const onMenuItemClick = async (menuItem) => {
+        if (menuItem.key === 'signout') {
+            await Auth.signOut();
+            window.location.reload();
+        } else {
+            navigate(menuItem.key);
+        }
+    };
     
 
     const menuItems = [
@@ -19,15 +30,14 @@ const SideMenu = () => {
             key: 'students',
             label: 'Students'
         },
+        {
+            key: 'signout',
+            label: 'Sign Out',
+        },
     ];
 
     
-    const onMenuItemClick = async (menuItems) => {
-       
-        
-        navigate(menuItems.key);
-        
-    };
+    
     return (
         
         <Menu items={menuItems} onClick={onMenuItemClick}>

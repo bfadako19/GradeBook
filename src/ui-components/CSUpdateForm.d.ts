@@ -7,30 +7,32 @@
 import * as React from "react";
 import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { CS } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type GradeCreateFormInputValues = {
-    int?: string;
+export declare type CSUpdateFormInputValues = {
+    courseID?: string;
 };
-export declare type GradeCreateFormValidationValues = {
-    int?: ValidationFunction<string>;
+export declare type CSUpdateFormValidationValues = {
+    courseID?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type GradeCreateFormOverridesProps = {
-    GradeCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    int?: PrimitiveOverrideProps<TextFieldProps>;
+export declare type CSUpdateFormOverridesProps = {
+    CSUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    courseID?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type GradeCreateFormProps = React.PropsWithChildren<{
-    overrides?: GradeCreateFormOverridesProps | undefined | null;
+export declare type CSUpdateFormProps = React.PropsWithChildren<{
+    overrides?: CSUpdateFormOverridesProps | undefined | null;
 } & {
-    clearOnSuccess?: boolean;
-    onSubmit?: (fields: GradeCreateFormInputValues) => GradeCreateFormInputValues;
-    onSuccess?: (fields: GradeCreateFormInputValues) => void;
-    onError?: (fields: GradeCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: GradeCreateFormInputValues) => GradeCreateFormInputValues;
-    onValidate?: GradeCreateFormValidationValues;
+    id?: string;
+    cS?: CS;
+    onSubmit?: (fields: CSUpdateFormInputValues) => CSUpdateFormInputValues;
+    onSuccess?: (fields: CSUpdateFormInputValues) => void;
+    onError?: (fields: CSUpdateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: CSUpdateFormInputValues) => CSUpdateFormInputValues;
+    onValidate?: CSUpdateFormValidationValues;
 } & React.CSSProperties>;
-export default function GradeCreateForm(props: GradeCreateFormProps): React.ReactElement;
+export default function CSUpdateForm(props: CSUpdateFormProps): React.ReactElement;

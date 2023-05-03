@@ -4,14 +4,15 @@ import { schema } from './schema';
 
 
 
-const { Grade, AssignmentGrade, Student, Course, Assignment, StudentCourse, StudentAssignment } = initSchema(schema);
+const { CS, Student, Course, Assignment, CA, Grade, CourseStudent, CourseAssignment } = initSchema(schema);
 
 export {
-  Grade,
-  AssignmentGrade,
+  CS,
   Student,
   Course,
   Assignment,
-  StudentCourse,
-  StudentAssignment
+  CA,
+  Grade,
+  CourseStudent,
+  CourseAssignment
 };

@@ -15,19 +15,16 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type StudentCreateFormInputValues = {
     name?: string;
     email?: string;
-    Year?: string;
 };
 export declare type StudentCreateFormValidationValues = {
     name?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
-    Year?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type StudentCreateFormOverridesProps = {
     StudentCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
-    Year?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type StudentCreateFormProps = React.PropsWithChildren<{
     overrides?: StudentCreateFormOverridesProps | undefined | null;

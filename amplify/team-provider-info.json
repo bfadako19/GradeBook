@@ -1,15 +1,20 @@
 {
   "staging": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-gradebook-staging-133403-authRole",
-      "UnauthRoleArn": "arn:aws:iam::201114705393:role/amplify-gradebook-staging-133403-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::201114705393:role/amplify-gradebook-staging-133403-authRole",
+      "AuthRoleName": "amplify-gradebook2-staging-141134-authRole",
+      "UnauthRoleArn": "arn:aws:iam::201114705393:role/amplify-gradebook2-staging-141134-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::201114705393:role/amplify-gradebook2-staging-141134-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-gradebook-staging-133403-deployment",
-      "UnauthRoleName": "amplify-gradebook-staging-133403-unauthRole",
-      "StackName": "amplify-gradebook-staging-133403",
-      "StackId": "arn:aws:cloudformation:us-east-1:201114705393:stack/amplify-gradebook-staging-133403/60dae060-c97f-11ed-8f2a-0a02c92590b5",
-      "AmplifyAppId": "d13cfczg4dh3qy"
+      "DeploymentBucketName": "amplify-gradebook2-staging-141134-deployment",
+      "UnauthRoleName": "amplify-gradebook2-staging-141134-unauthRole",
+      "StackName": "amplify-gradebook2-staging-141134",
+      "StackId": "arn:aws:cloudformation:us-east-1:201114705393:stack/amplify-gradebook2-staging-141134/3efedb20-e8f3-11ed-b951-0a911989fdcd",
+      "AmplifyAppId": "d10ifne0wsv99k"
+    },
+    "categories": {
+      "auth": {
+        "GradeBook2": {}
+      }
     }
   }
 }

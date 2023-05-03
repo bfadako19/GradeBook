@@ -12,25 +12,25 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type GradeCreateFormInputValues = {
-    int?: string;
+export declare type CSCreateFormInputValues = {
+    courseID?: string;
 };
-export declare type GradeCreateFormValidationValues = {
-    int?: ValidationFunction<string>;
+export declare type CSCreateFormValidationValues = {
+    courseID?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type GradeCreateFormOverridesProps = {
-    GradeCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    int?: PrimitiveOverrideProps<TextFieldProps>;
+export declare type CSCreateFormOverridesProps = {
+    CSCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    courseID?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type GradeCreateFormProps = React.PropsWithChildren<{
-    overrides?: GradeCreateFormOverridesProps | undefined | null;
+export declare type CSCreateFormProps = React.PropsWithChildren<{
+    overrides?: CSCreateFormOverridesProps | undefined | null;
 } & {
     clearOnSuccess?: boolean;
-    onSubmit?: (fields: GradeCreateFormInputValues) => GradeCreateFormInputValues;
-    onSuccess?: (fields: GradeCreateFormInputValues) => void;
-    onError?: (fields: GradeCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: GradeCreateFormInputValues) => GradeCreateFormInputValues;
-    onValidate?: GradeCreateFormValidationValues;
+    onSubmit?: (fields: CSCreateFormInputValues) => CSCreateFormInputValues;
+    onSuccess?: (fields: CSCreateFormInputValues) => void;
+    onError?: (fields: CSCreateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: CSCreateFormInputValues) => CSCreateFormInputValues;
+    onValidate?: CSCreateFormValidationValues;
 } & React.CSSProperties>;
-export default function GradeCreateForm(props: GradeCreateFormProps): React.ReactElement;
+export default function CSCreateForm(props: CSCreateFormProps): React.ReactElement;

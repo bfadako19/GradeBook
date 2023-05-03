@@ -26,11 +26,9 @@ export default function StudentUpdateForm(props) {
   const initialValues = {
     name: "",
     email: "",
-    Year: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [email, setEmail] = React.useState(initialValues.email);
-  const [Year, setYear] = React.useState(initialValues.Year);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = studentRecord
@@ -38,7 +36,6 @@ export default function StudentUpdateForm(props) {
       : initialValues;
     setName(cleanValues.name);
     setEmail(cleanValues.email);
-    setYear(cleanValues.Year);
     setErrors({});
   };
   const [studentRecord, setStudentRecord] = React.useState(student);
@@ -53,7 +50,6 @@ export default function StudentUpdateForm(props) {
   const validations = {
     name: [{ type: "Required" }],
     email: [{ type: "Required" }],
-    Year: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -82,7 +78,6 @@ export default function StudentUpdateForm(props) {
         let modelFields = {
           name,
           email,
-          Year,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -140,7 +135,6 @@ export default function StudentUpdateForm(props) {
             const modelFields = {
               name: value,
               email,
-              Year,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -166,7 +160,6 @@ export default function StudentUpdateForm(props) {
             const modelFields = {
               name,
               email: value,
-              Year,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -180,32 +173,6 @@ export default function StudentUpdateForm(props) {
         errorMessage={errors.email?.errorMessage}
         hasError={errors.email?.hasError}
         {...getOverrideProps(overrides, "email")}
-      ></TextField>
-      <TextField
-        label="Year"
-        isRequired={false}
-        isReadOnly={false}
-        value={Year}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              email,
-              Year: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.Year ?? value;
-          }
-          if (errors.Year?.hasError) {
-            runValidationTasks("Year", value);
-          }
-          setYear(value);
-        }}
-        onBlur={() => runValidationTasks("Year", Year)}
-        errorMessage={errors.Year?.errorMessage}
-        hasError={errors.Year?.hasError}
-        {...getOverrideProps(overrides, "Year")}
       ></TextField>
       <Flex
         justifyContent="space-between"

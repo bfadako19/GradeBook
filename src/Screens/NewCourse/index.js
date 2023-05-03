@@ -1,39 +1,21 @@
 import { Card, Input, Button,message,Form } from "antd";
-import {Course } from "../../Models";
+import {Course } from "../../models";
 import { DataStore } from "aws-amplify";
-import { useState, useEffect} from "react";
+import { useState} from "react";
     
 const NewCourse =() =>{
     const [newCourse, setNewCourse] = useState('');
-    const [course, setCourse] = useState('');
     const [name, setName] = useState('');
         const onFinish = () => {
             if(!name){
                 message.error('Name Required!');
                 return;
             }
-            if(!course){
                  createNewCourse();
-            }else{
-                 updateCourse();
-            }
     
         };
-        useEffect(() => {
-            if(!course){
-                return;
-            }
-            setName(course.name);
-            
-        }, [course]);
-        const updateCourse = async () => {
-            const updateCourse = await DataStore.save(
-                Course.copyOf(course, (updated) => {
-                    updated.name = name;
-                }));
-            setCourse(updateCourse);
-            message.success('Course Updated!');
-        };
+       
+        
         const createNewCourse = async () => {
             const newCourse = DataStore.save(new Course({
                 name,  

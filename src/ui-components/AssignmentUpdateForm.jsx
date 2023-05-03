@@ -8,12 +8,13 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Grade } from "../models";
+import { Assignment } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function GradeCreateForm(props) {
+export default function AssignmentUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    assignment,
     onSuccess,
     onError,
     onSubmit,
@@ -23,16 +24,40 @@ export default function GradeCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    int: "",
+    name: "",
+    dueDate: "",
+    totalPoints: "",
   };
-  const [int, setInt] = React.useState(initialValues.int);
+  const [name, setName] = React.useState(initialValues.name);
+  const [dueDate, setDueDate] = React.useState(initialValues.dueDate);
+  const [totalPoints, setTotalPoints] = React.useState(
+    initialValues.totalPoints
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setInt(initialValues.int);
+    const cleanValues = assignmentRecord
+      ? { ...initialValues, ...assignmentRecord }
+      : initialValues;
+    setName(cleanValues.name);
+    setDueDate(cleanValues.dueDate);
+    setTotalPoints(cleanValues.totalPoints);
     setErrors({});
   };
+  const [assignmentRecord, setAssignmentRecord] = React.useState(assignment);
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? await DataStore.query(Assignment, idProp)
+        : assignment;
+      setAssignmentRecord(record);
+    };
+    queryData();
+  }, [idProp, assignment]);
+  React.useEffect(resetStateValues, [assignmentRecord]);
   const validations = {
-    int: [],
+    name: [{ type: "Required" }],
+    dueDate: [],
+    totalPoints: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -59,7 +84,9 @@ export default function GradeCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          int,
+          name,
+          dueDate,
+          totalPoints,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -89,12 +116,13 @@ export default function GradeCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Grade(modelFields));
+          await DataStore.save(
+            Assignment.copyOf(assignmentRecord, (updated) => {
+              Object.assign(updated, modelFields);
+            })
+          );
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -102,45 +130,100 @@ export default function GradeCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "GradeCreateForm")}
+      {...getOverrideProps(overrides, "AssignmentUpdateForm")}
       {...rest}
     >
       <TextField
-        label="Int"
-        isRequired={false}
+        label="Name"
+        isRequired={true}
         isReadOnly={false}
-        value={int}
+        value={name}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              int: value,
+              name: value,
+              dueDate,
+              totalPoints,
             };
             const result = onChange(modelFields);
-            value = result?.int ?? value;
+            value = result?.name ?? value;
           }
-          if (errors.int?.hasError) {
-            runValidationTasks("int", value);
+          if (errors.name?.hasError) {
+            runValidationTasks("name", value);
           }
-          setInt(value);
+          setName(value);
         }}
-        onBlur={() => runValidationTasks("int", int)}
-        errorMessage={errors.int?.errorMessage}
-        hasError={errors.int?.hasError}
-        {...getOverrideProps(overrides, "int")}
+        onBlur={() => runValidationTasks("name", name)}
+        errorMessage={errors.name?.errorMessage}
+        hasError={errors.name?.hasError}
+        {...getOverrideProps(overrides, "name")}
+      ></TextField>
+      <TextField
+        label="Due date"
+        isRequired={false}
+        isReadOnly={false}
+        value={dueDate}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              dueDate: value,
+              totalPoints,
+            };
+            const result = onChange(modelFields);
+            value = result?.dueDate ?? value;
+          }
+          if (errors.dueDate?.hasError) {
+            runValidationTasks("dueDate", value);
+          }
+          setDueDate(value);
+        }}
+        onBlur={() => runValidationTasks("dueDate", dueDate)}
+        errorMessage={errors.dueDate?.errorMessage}
+        hasError={errors.dueDate?.hasError}
+        {...getOverrideProps(overrides, "dueDate")}
+      ></TextField>
+      <TextField
+        label="Total points"
+        isRequired={true}
+        isReadOnly={false}
+        value={totalPoints}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              dueDate,
+              totalPoints: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.totalPoints ?? value;
+          }
+          if (errors.totalPoints?.hasError) {
+            runValidationTasks("totalPoints", value);
+          }
+          setTotalPoints(value);
+        }}
+        onBlur={() => runValidationTasks("totalPoints", totalPoints)}
+        errorMessage={errors.totalPoints?.errorMessage}
+        hasError={errors.totalPoints?.hasError}
+        {...getOverrideProps(overrides, "totalPoints")}
       ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || assignment)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -150,7 +233,10 @@ export default function GradeCreateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || assignment) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

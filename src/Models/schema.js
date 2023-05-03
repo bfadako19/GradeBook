@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Grade": {
-            "name": "Grade",
+        "CS": {
+            "name": "CS",
             "fields": {
                 "id": {
                     "name": "id",
@@ -10,77 +10,18 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "grade": {
-                    "name": "grade",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Grades",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "AssignmentGrade": {
-            "name": "AssignmentGrade",
-            "fields": {
-                "id": {
-                    "name": "id",
+                "courseID": {
+                    "name": "courseID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
                 },
-                "assignmentID": {
-                    "name": "assignmentID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Grade": {
-                    "name": "Grade",
+                "Student": {
+                    "name": "Student",
                     "isArray": false,
                     "type": {
-                        "model": "Grade"
+                        "model": "Student"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -90,7 +31,7 @@ export const schema = {
                             "id"
                         ],
                         "targetNames": [
-                            "assignmentGradeGradeId"
+                            "cSStudentId"
                         ]
                     }
                 },
@@ -110,8 +51,8 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
-                "assignmentGradeGradeId": {
-                    "name": "assignmentGradeGradeId",
+                "cSStudentId": {
+                    "name": "cSStudentId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -119,7 +60,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "AssignmentGrades",
+            "pluralName": "CS",
             "attributes": [
                 {
                     "type": "model",
@@ -128,9 +69,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byAssignment",
+                        "name": "byCourse",
                         "fields": [
-                            "assignmentID"
+                            "courseID"
                         ]
                     }
                 },
@@ -176,18 +117,11 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "Year": {
-                    "name": "Year",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Courses": {
-                    "name": "Courses",
+                "courses": {
+                    "name": "courses",
                     "isArray": true,
                     "type": {
-                        "model": "StudentCourse"
+                        "model": "CourseStudent"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -199,11 +133,11 @@ export const schema = {
                         ]
                     }
                 },
-                "Assignments": {
-                    "name": "Assignments",
+                "Grades": {
+                    "name": "Grades",
                     "isArray": true,
                     "type": {
-                        "model": "StudentAssignment"
+                        "model": "Grade"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -211,7 +145,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "student"
+                            "studentID"
                         ]
                     }
                 },
@@ -274,11 +208,43 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "Students": {
+                    "name": "Students",
+                    "isArray": true,
+                    "type": {
+                        "model": "CourseStudent"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "course"
+                        ]
+                    }
+                },
                 "Assignments": {
                     "name": "Assignments",
                     "isArray": true,
                     "type": {
-                        "model": "Assignment"
+                        "model": "CourseAssignment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "course"
+                        ]
+                    }
+                },
+                "CS": {
+                    "name": "CS",
+                    "isArray": true,
+                    "type": {
+                        "model": "CS"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -290,11 +256,11 @@ export const schema = {
                         ]
                     }
                 },
-                "students": {
-                    "name": "students",
+                "CAS": {
+                    "name": "CAS",
                     "isArray": true,
                     "type": {
-                        "model": "StudentCourse"
+                        "model": "CA"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -302,7 +268,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "course"
+                            "courseID"
                         ]
                     }
                 },
@@ -375,22 +341,15 @@ export const schema = {
                 "totalPoints": {
                     "name": "totalPoints",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
-                "courseID": {
-                    "name": "courseID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "students": {
-                    "name": "students",
+                "courses": {
+                    "name": "courses",
                     "isArray": true,
                     "type": {
-                        "model": "StudentAssignment"
+                        "model": "CourseAssignment"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -399,22 +358,6 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
                             "assignment"
-                        ]
-                    }
-                },
-                "AssignmentGrades": {
-                    "name": "AssignmentGrades",
-                    "isArray": true,
-                    "type": {
-                        "model": "AssignmentGrade"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "assignmentID"
                         ]
                     }
                 },
@@ -437,6 +380,90 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "Assignments",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "CA": {
+            "name": "CA",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "courseID": {
+                    "name": "courseID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Assignment": {
+                    "name": "Assignment",
+                    "isArray": false,
+                    "type": {
+                        "model": "Assignment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "cAAssignmentId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "cAAssignmentId": {
+                    "name": "cAAssignmentId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "CAS",
             "attributes": [
                 {
                     "type": "model",
@@ -469,8 +496,90 @@ export const schema = {
                 }
             ]
         },
-        "StudentCourse": {
-            "name": "StudentCourse",
+        "Grade": {
+            "name": "Grade",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "int": {
+                    "name": "int",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "studentID": {
+                    "name": "studentID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "courseName": {
+                    "name": "courseName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Grades",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byStudent",
+                        "fields": [
+                            "studentID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "CourseStudent": {
+            "name": "CourseStudent",
             "fields": {
                 "id": {
                     "name": "id",
@@ -541,7 +650,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "StudentCourses",
+            "pluralName": "CourseStudents",
             "attributes": [
                 {
                     "type": "model",
@@ -567,8 +676,8 @@ export const schema = {
                 }
             ]
         },
-        "StudentAssignment": {
-            "name": "StudentAssignment",
+        "CourseAssignment": {
+            "name": "CourseAssignment",
             "fields": {
                 "id": {
                     "name": "id",
@@ -577,8 +686,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "studentId": {
-                    "name": "studentId",
+                "courseId": {
+                    "name": "courseId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -591,18 +700,18 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "student": {
-                    "name": "student",
+                "course": {
+                    "name": "course",
                     "isArray": false,
                     "type": {
-                        "model": "Student"
+                        "model": "Course"
                     },
                     "isRequired": true,
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "studentId"
+                            "courseId"
                         ]
                     }
                 },
@@ -639,7 +748,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "StudentAssignments",
+            "pluralName": "CourseAssignments",
             "attributes": [
                 {
                     "type": "model",
@@ -648,9 +757,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byStudent",
+                        "name": "byCourse",
                         "fields": [
-                            "studentId"
+                            "courseId"
                         ]
                     }
                 },
@@ -669,5 +778,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.4",
-    "version": "f32c7052306a11d88c9c190dbb1e4686"
+    "version": "5c87cdf43a89a4465c973e5b15b0a972"
 };

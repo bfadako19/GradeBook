@@ -24,15 +24,15 @@ export default function GradeUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    grade: "",
+    int: "",
   };
-  const [grade, setGrade] = React.useState(initialValues.grade);
+  const [int, setInt] = React.useState(initialValues.int);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = gradeRecord
       ? { ...initialValues, ...gradeRecord }
       : initialValues;
-    setGrade(cleanValues.grade);
+    setInt(cleanValues.int);
     setErrors({});
   };
   const [gradeRecord, setGradeRecord] = React.useState(grade);
@@ -45,7 +45,7 @@ export default function GradeUpdateForm(props) {
   }, [idProp, grade]);
   React.useEffect(resetStateValues, [gradeRecord]);
   const validations = {
-    grade: [],
+    int: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -72,7 +72,7 @@ export default function GradeUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          grade,
+          int,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -120,32 +120,28 @@ export default function GradeUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label="Grade"
+        label="Int"
         isRequired={false}
         isReadOnly={false}
-        type="number"
-        step="any"
-        value={grade}
+        value={int}
         onChange={(e) => {
-          let value = isNaN(parseInt(e.target.value))
-            ? e.target.value
-            : parseInt(e.target.value);
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              grade: value,
+              int: value,
             };
             const result = onChange(modelFields);
-            value = result?.grade ?? value;
+            value = result?.int ?? value;
           }
-          if (errors.grade?.hasError) {
-            runValidationTasks("grade", value);
+          if (errors.int?.hasError) {
+            runValidationTasks("int", value);
           }
-          setGrade(value);
+          setInt(value);
         }}
-        onBlur={() => runValidationTasks("grade", grade)}
-        errorMessage={errors.grade?.errorMessage}
-        hasError={errors.grade?.hasError}
-        {...getOverrideProps(overrides, "grade")}
+        onBlur={() => runValidationTasks("int", int)}
+        errorMessage={errors.int?.errorMessage}
+        hasError={errors.int?.hasError}
+        {...getOverrideProps(overrides, "int")}
       ></TextField>
       <Flex
         justifyContent="space-between"

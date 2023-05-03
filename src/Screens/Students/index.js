@@ -1,11 +1,12 @@
 import { useState, useEffect} from "react";
-import {Card, Table, message, Popconfirm} from "antd";
-import { Student } from "../../Models";
+import {Card, Table} from "antd";
+import { Student } from "../../models";
 import { DataStore } from "aws-amplify";
-import { Link } from "react-router-dom";
+import { Popconfirm } from "antd";
 import { Button } from "antd/es/radio";
 
 const Students = () => {
+    
 
         const[student,setStudent] = useState([]);
 
@@ -15,11 +16,11 @@ const Students = () => {
             }
             DataStore.query(Student).then(setStudent);
         },[student]);
-  
+
         const deleteStudent= async (item) => {
             await DataStore.delete(Student, s => s.id.eq(item.id));
             setStudent(student.filter((s) => s.id !== item.id));
-            message.success('Student deleted!')
+           
         }
 
         const tableColumns = [
@@ -31,44 +32,30 @@ const Students = () => {
             dataIndex: 'email',
             key: 'email',
            },
-           { title: 'Action',
-      key: 'action',
-      render: (_,item) => (
-        <Popconfirm
-            placement = "topLeft"
-            title = {'Are you sure you want to delete this student?'}
-            onConfirm={() => deleteStudent(item)}
-            okText='Yes'
-            cancelText='No'
-
-        >
-      
-        <Button danger type="primary">Remove</Button>
-        </Popconfirm>
-      )
-    },
-    {title:'Edit',
-     key: 'edit',
-     render:(_,item) => ( 
-        <Link to={'updateStudent'}>
-        <Button type="primary">Edit</Button>
-    </Link>)
-}
-    
+           { title: '',
+           key: 'action',
+           render: (_,item) => (
+             <Popconfirm
+                 placement = "topLeft"
+                 title = {'Are you sure you want to delete this student?'}
+                 onConfirm={() => deleteStudent(item)}
+                 okText='Yes'
+                 cancelText='No'
+     
+             >
+           
+             <Button type="primary">Remove</Button>
+             </Popconfirm>
+           )
+         },
         ];
-        const renderNewStudentButton = () => {
-            return(
-                <Link to={'newStudent'}>
-                    <Button type="primary">New Student</Button>
-                </Link>
-            )}
         const styles ={
             page:{
                 margin: 20,
             },
     }
         return(
-            <Card title='Students' style={styles.page} extra={renderNewStudentButton()}>
+            <Card title='Students' style={styles.page} >
                 <Table
                 dataSource={student}
                 columns={tableColumns}

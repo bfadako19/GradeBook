@@ -8,10 +8,10 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Grade } from "../models";
+import { CS } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function GradeCreateForm(props) {
+export default function CSCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -23,16 +23,16 @@ export default function GradeCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    int: "",
+    courseID: "",
   };
-  const [int, setInt] = React.useState(initialValues.int);
+  const [courseID, setCourseID] = React.useState(initialValues.courseID);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setInt(initialValues.int);
+    setCourseID(initialValues.courseID);
     setErrors({});
   };
   const validations = {
-    int: [],
+    courseID: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -59,7 +59,7 @@ export default function GradeCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          int,
+          courseID,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -89,7 +89,7 @@ export default function GradeCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Grade(modelFields));
+          await DataStore.save(new CS(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -102,32 +102,32 @@ export default function GradeCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "GradeCreateForm")}
+      {...getOverrideProps(overrides, "CSCreateForm")}
       {...rest}
     >
       <TextField
-        label="Int"
-        isRequired={false}
+        label="Course id"
+        isRequired={true}
         isReadOnly={false}
-        value={int}
+        value={courseID}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              int: value,
+              courseID: value,
             };
             const result = onChange(modelFields);
-            value = result?.int ?? value;
+            value = result?.courseID ?? value;
           }
-          if (errors.int?.hasError) {
-            runValidationTasks("int", value);
+          if (errors.courseID?.hasError) {
+            runValidationTasks("courseID", value);
           }
-          setInt(value);
+          setCourseID(value);
         }}
-        onBlur={() => runValidationTasks("int", int)}
-        errorMessage={errors.int?.errorMessage}
-        hasError={errors.int?.hasError}
-        {...getOverrideProps(overrides, "int")}
+        onBlur={() => runValidationTasks("courseID", courseID)}
+        errorMessage={errors.courseID?.errorMessage}
+        hasError={errors.courseID?.hasError}
+        {...getOverrideProps(overrides, "courseID")}
       ></TextField>
       <Flex
         justifyContent="space-between"

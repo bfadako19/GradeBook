@@ -1,9 +1,8 @@
 
 import { useState, useEffect} from "react";
 import {Card, Table, message, Popconfirm} from "antd";
-import { Assignment } from "../../Models";
+import { Assignment } from "../../models";
 import { DataStore } from "aws-amplify";
-import { Link } from "react-router-dom";
 import { Button } from "antd/es/radio";
 
 
@@ -39,7 +38,7 @@ const Assignments = () => {
        dataIndex: 'dueDate',
        key: 'dueDate',
       },
-      { title: 'Action',
+      { title: '',
       key: 'action',
       render: (_,item) => (
         <Popconfirm
@@ -54,32 +53,19 @@ const Assignments = () => {
         <Button danger type="primary">Remove</Button>
         </Popconfirm>
       )
-    },
-    {title:'Edit',
-     key: 'edit',
-     render:(_,item) => ( 
-        <Link to={'updateAssignment'}>
-        <Button type="primary">Edit</Button>
-    </Link>)
-    }
+      }
 
      
 
     ];
-    const renderNewAssignmentButton = () => {
-        return(
-            <Link to={'newAssignment'}>
-                <Button type="primary">New Assignment</Button>
-            </Link>
-        )
-    }
+  
     const styles ={
         page:{
             margin: 20,
         },
 }
     return(
-        <Card title='Assignments' style={styles.page} extra={renderNewAssignmentButton()}>
+        <Card title='Assignments' style={styles.page} >
             <Table
             dataSource={assignment}
             columns={tableColumns}
