@@ -79,7 +79,14 @@ const CourseAssignment =() =>{
       <Link to={`updateAssignment/${item.id}`}>
       <Button type="primary">Edit</Button>
   </Link>)
-  }
+  },
+  {title:'',
+  key: 'grades',
+  render:(_,item) => ( 
+     <Link to={`grades/${item.id}`}>
+     <Button type="primary">Grades</Button>
+ </Link>)
+ }
    ];
    const renderNewAssignmentButton = () => {
     return(

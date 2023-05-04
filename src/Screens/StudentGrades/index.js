@@ -1,5 +1,5 @@
 import { Card, Table } from "antd";
-import { Student,Grade } from "../../models";
+import { Grade, Assignment } from "../../models";
 import { DataStore } from "aws-amplify";
 import { useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import { Button } from "antd/es/radio";
 
     
 const StudentGrade =() =>{
-    const [student,setStudent] = useState([]);
+    const [assignment,setAssignment] = useState([]);
     const [grade,setGrade] = useState([]);
 
     const { id } = useParams();
@@ -17,7 +17,7 @@ const StudentGrade =() =>{
         if (!id) {
             return;
         }
-        DataStore.query(Student, id).then(setStudent);
+        DataStore.query(Assignment, id).then(setAssignment);
 
     }, [id])
 
@@ -26,24 +26,25 @@ const StudentGrade =() =>{
 
 
     const getGrades = async () => {
-        let students = await DataStore.query(Student, (s) => s.id.eq(id));
+        let assignments = await DataStore.query(Assignment, (a) => a.id.eq(id));
         let grades = await DataStore.query(Grade);
         const display = [];
-        students.forEach(student => {
-          let grade = grades.find(g => g.id === student.studentId)
-          if (grade.name) {
+        assignments.forEach(assignment => {
+          let grade = grades.find(g => g.assignmentID === assignment.id)
+          if (grade) {
             display.push(grade);
+            
           }
         })
         setGrade(display);
-        console.log(student);
     };
+
     useEffect(() => {
       getGrades();
     });
     const tableColumns = [
         { title: 'Name',
-        dataIndex: 'name',
+        dataIndex: 'studentName',
         key: 'name',
        },
        { title: 'Grade',

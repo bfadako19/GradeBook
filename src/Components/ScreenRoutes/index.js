@@ -29,8 +29,8 @@ const ScreenRoutes = () => {
             <Route path='ViewCourse/:id/CourseAssignment/updateAssignment/:id'element={<UpdateAssignment/>}/>
             <Route path='ViewCourse/:id/courseStudent'element={<CourseStudent/>}/>
             <Route path='ViewCourse/:id/courseAssignment'element={<CourseAssignment/>}/>
-            <Route path='ViewCourse/:id/courseStudent/grades/:id'element={<StudentGrade/>}/>
-            <Route path='ViewCourse/:id/CourseStudent/grades/:id/newGrades'element={<NewGrade/>}/>
+            <Route path='ViewCourse/:id/courseAssignment/grades/:id'element={<StudentGrade/>}/>
+            <Route path='ViewCourse/:id/CourseAssignment/grades/:id/newGrades'element={<NewGrade/>}/>
 
         </Routes>
         

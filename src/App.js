@@ -2,6 +2,8 @@ import {Layout } from "antd";
 import ScreenRoutes from "./Components/ScreenRoutes";
 import SideBar from "./Components/SideBar";
 import AuthContextProvider from "./Context/AuthContext";
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from "aws-amplify";
 import awsconfig from "./aws-exports";
 Amplify.configure(awsconfig);
@@ -32,4 +34,4 @@ function App() {
   );
 }
 
-export default App;;
+export default withAuthenticator(App);;

@@ -30,9 +30,8 @@ const NewStudent =() =>{
             message.error('Email Required!');
             return;
         }
-        if(!student){
-             await createNewStudent();
-        }
+        await createNewStudent();
+        await createNewCS();
 
     
     };
@@ -53,8 +52,7 @@ const NewStudent =() =>{
             
         }));
         setNewStudent(newStudent);
-        message.success('Student Created!')
-        console.log(newStudent);
+        message.success('Student Created!');
     };
     const createNewCS = async () => {
         const newCS = DataStore.save(new CS({
@@ -64,6 +62,7 @@ const NewStudent =() =>{
             
         }));
         setNewCS(newCS);
+        message.success('wsdt')
     };
     return (
         <Card title={'Create New Student'} style={styles.page}>

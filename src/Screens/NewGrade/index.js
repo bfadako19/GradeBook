@@ -1,5 +1,5 @@
 import { Card, Input, Button,message,Form } from "antd";
-import { Student, Grade } from "../../models";
+import {Grade, Assignment } from "../../models";
 import { DataStore } from "aws-amplify";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ const NewGrade =() =>{
     const [newGrade, setNewGrade] = useState('');
     const[name, setName] = useState('');
     const[grade,setGrade] = useState('');
-    const[student,setStudent] = useState('');
+    const[assignment,setAssignment] = useState('');
     const [course, setCourse] = useState('');
     
     const { id } = useParams();
@@ -16,7 +16,7 @@ const NewGrade =() =>{
         if (!id) {
             return;
         }
-        DataStore.query(Student, id).then(setStudent);
+        DataStore.query(Assignment, id).then(setAssignment);
 
     }, [id])
     console.log(course);
@@ -30,17 +30,16 @@ const NewGrade =() =>{
             message.error('Grade Required!');
             return;
         }
-        if(!grade){
-             await createNewGrade();
-        }
+        await createNewGrade();
 
     
     };
    
     const createNewGrade = async () => {
         const newGrade = DataStore.save(new Grade({
-            name,
-            int: grade,
+            studentName: name,
+            grade: grade,
+            assignmentID: assignment.id
             
             
             
@@ -54,7 +53,7 @@ const NewGrade =() =>{
         <Card title={'Create New Grade'} style={styles.page}>
             <Form layout="vertical" onFinish={onFinish}>
                 <Form.Item label = {'Name'} required name='name'>
-                    <Input placeholder="Enter Assignment Name"
+                    <Input placeholder="Enter Student Name"
                     value = {name}
                     onChange={(e) => setName(e.target.value)}/>
                     

@@ -36,12 +36,11 @@ const CourseStudent =() =>{
         const display = [];
         courseStudents.forEach(courseStudent => {
           let student = students.find(a => a.id === courseStudent.cSStudentId)
-          if (student.name) {
+          if (student) {
             display.push(student);
           }
         })
         setStudent(display);
-        console.log(student);
     };
     useEffect(() => {
       getStudents();
@@ -77,14 +76,7 @@ const CourseStudent =() =>{
          <Link to={`UpdateStudent/${item.id}`}>
          <Button type="primary">Edit</Button>
      </Link>)
- },
- {title:'',
- key: 'grades',
- render:(_,item) => ( 
-    <Link to={`grades/${item.id}`}>
-    <Button type="primary">Grades</Button>
-</Link>)
-}
+ }
    ];
    const renderNewStudentButton = () => {
     return(
